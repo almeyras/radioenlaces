@@ -1,0 +1,62 @@
+# jan/19/2022 18:36:54 by RouterOS 7.1.1
+# software id = CE4C-B56A
+#
+# model = 960PGS
+# serial number = B7DF0BF30DA8
+/interface bridge
+add name=bridgeWAN
+add name=bridgeclaseAbackhaul
+add name=bridgeclaseBlastmile
+/interface ethernet
+set [ find default-name=ether2 ] poe-out=forced-on
+set [ find default-name=ether3 ] poe-out=forced-on
+/interface lte apn
+set [ find default=yes ] ip-type=ipv4
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/queue simple
+add max-limit=10M/10M name=queue1 target=172.16.1.4/32
+/routing bgp template
+set default as=65530 disabled=no name=default output.network=bgp-networks
+/routing ospf instance
+add name=default router-id=10.0.1.1
+/routing ospf area
+add instance=default name=backbone-v2
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,passw\
+    ord,web,sniff,sensitive,api,romon,dude,tikapp,rest-api"
+/interface bridge port
+add bridge=bridgeWAN ingress-filtering=no interface=sfp1
+add bridge=bridgeWAN ingress-filtering=no interface=ether1
+add bridge=bridgeclaseAbackhaul ingress-filtering=no interface=ether2
+add bridge=bridgeclaseAbackhaul ingress-filtering=no interface=ether3
+add bridge=bridgeclaseBlastmile ingress-filtering=no interface=ether4
+add bridge=bridgeclaseBlastmile ingress-filtering=no interface=ether5
+/ip neighbor discovery-settings
+set discover-interface-list=!dynamic
+/ip settings
+set max-neighbor-entries=8192
+/ipv6 settings
+set disable-ipv6=yes max-neighbor-entries=8192
+/ip address
+add address=10.0.1.1/16 interface=bridgeclaseAbackhaul network=10.0.0.0
+add address=172.16.1.1/24 interface=bridgeclaseBlastmile network=172.16.1.0
+add address=192.168.2.201/24 interface=bridgeWAN network=192.168.2.0
+/ip dhcp-client
+add interface=bridgeWAN
+/ip firewall nat
+add action=masquerade chain=srcnat out-interface=bridgeWAN
+/ip service
+set telnet disabled=yes
+set ftp disabled=yes
+/routing ospf interface-template
+add area=backbone-v2 networks=172.16.1.0/24
+add area=backbone-v2 networks=10.0.0.0/16
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=N1
+/system package update
+set channel=testing
+/system upgrade upgrade-package-source
+add address=10.0.3.1 user=admin
