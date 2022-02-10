@@ -1,0 +1,30 @@
+# jan/19/2022 18:50:10 by RouterOS 6.44
+# software id = 3JJY-EAPN
+#
+# model = RouterBOARD SXTsq 5nD
+# serial number = B7E50D4D2207
+/interface bridge
+add name=bridgeclaseB
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=\
+    profile1 supplicant-identity="" wpa2-pre-shared-key=Adminadmin1
+/interface wireless
+set [ find default-name=wlan1 ] antenna-gain=16 band=5ghz-onlyn channel-width=\
+    20/40mhz-XX country=spain disabled=no frequency=auto frequency-mode=\
+    regulatory-domain installation=outdoor mode=bridge radio-name=accesoN1 \
+    security-profile=profile1 ssid=accesoN1 wmm-support=enabled wps-mode=\
+    disabled
+/interface bridge port
+add bridge=bridgeclaseB interface=ether1
+add bridge=bridgeclaseB interface=wlan1
+/ip address
+add address=172.16.1.2/24 interface=bridgeclaseB network=172.16.1.0
+/ip dns
+set allow-remote-requests=yes servers=8.8.8.8
+/ip route
+add distance=1 gateway=172.16.1.1
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=accesoN1
