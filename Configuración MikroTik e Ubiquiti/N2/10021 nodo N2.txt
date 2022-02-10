@@ -1,0 +1,45 @@
+# jan/19/2022 18:36:36 by RouterOS 6.49.2
+# software id = HZ49-X14C
+#
+# model = 960PGS
+# serial number = B7DF0B16C62D
+/interface bridge
+add name=bridgeWan
+add name=bridgeclaseAbackhaul
+add name=bridgeclaseBlastmile
+/interface ethernet
+set [ find default-name=ether2 ] poe-out=forced-on
+set [ find default-name=ether3 ] poe-out=forced-on
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/queue simple
+add max-limit=10M/10M name=queue1 target=172.16.2.4/32
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.2.1
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,passw\
+    ord,web,sniff,sensitive,api,romon,dude,tikapp"
+/interface bridge port
+add bridge=bridgeWan interface=sfp1
+add bridge=bridgeWan interface=ether1
+add bridge=bridgeclaseAbackhaul interface=ether2
+add bridge=bridgeclaseAbackhaul interface=ether3
+add bridge=bridgeclaseBlastmile interface=ether4
+add bridge=bridgeclaseBlastmile interface=ether5
+/ip neighbor discovery-settings
+set discover-interface-list=!dynamic
+/ip address
+add address=10.0.2.1/16 interface=bridgeclaseAbackhaul network=10.0.0.0
+add address=172.16.2.1/24 interface=bridgeclaseBlastmile network=172.16.2.0
+add address=192.168.2.202/24 interface=bridgeWan network=192.168.2.0
+/ip dhcp-client
+add disabled=no interface=bridgeWan
+/ip firewall nat
+add action=masquerade chain=srcnat out-interface=bridgeWan
+/routing ospf network
+add area=backbone network=172.16.2.0/24
+add area=backbone network=10.0.0.0/16
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=N2
