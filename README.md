@@ -23,6 +23,7 @@ Durante a realización das prácticas haberá ocasións nas que teñas problemas
 ```
 
 - macOS:
+```
 	sudo route -n add -net 10.0.0.0/16 192.168.0.201
 	sudo route -n add -net 10.0.0.0/16 192.168.0.202 metric 5
 	sudo route -n add -net 10.0.0.0/16 192.168.0.203 metric 10
@@ -30,9 +31,10 @@ Durante a realización das prácticas haberá ocasións nas que teñas problemas
 	sudo route -n add -net 172.16.2.0/24 192.168.0.202
 	sudo route -n add -net 172.16.3.0/24 192.168.0.203
 	netstat -nr
-
+```
 
 - Linux:
+```
 	sudo ip route add 10.0.0.0/16 via 192.168.0.201
 	sudo ip route add 10.0.0.0/16 via 192.168.0.202 metric 5
 	sudo ip route add 10.0.0.0/16 via 192.168.0.203 metric 10
@@ -40,8 +42,12 @@ Durante a realización das prácticas haberá ocasións nas que teñas problemas
 	sudo ip route add 172.17.2.0/24 via 192.168.0.202
 	sudo ip route add 172.17.3.0/24 via 192.168.0.203
 	ss -natup
+```
 
 Lembra eliminar as rutas despois de rematar a práctica.
+
+## Simulación en Cisco Packet Tracer
+[Neste link](https://github.com/almeyras/radioenlaces/tree/main/Simulación%20Cisco%20Packet%20Tracer)
 
 
 
