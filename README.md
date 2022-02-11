@@ -12,6 +12,7 @@ Rematada a rede de transporte, pasamos á rede de acceso (_"last mile"_, de cor 
 Durante a realización das prácticas haberá ocasións nas que teñas problemas para acceder ós equipos. Para reducir esa fricción, o mellor é que prepares o teu PC con rutas estáticas ás subredes desta práctica. Supoñendo que a túa rede local (en cor vermella) ten a dirección de rede `192.168.0.0/24`, e que os nodos N1, N2, N3 van ter as IP `.201`, `.202`e `203`; as rutas estáticas serían:
 
 - Windows (`cmd` como administrador). O modificador `-p`fai que as rutas persistan despois de reiniciar o PC:
+```
 	route ADD 10.0.0.0 MASK 255.255.0.0 192.168.0.201
 	route ADD 10.0.0.0 MASK 255.255.0.0 192.168.0.202 METRIC 5
 	route ADD 10.0.0.0 MASK 255.255.0.0 192.168.0.203 METRIC 10
@@ -19,7 +20,7 @@ Durante a realización das prácticas haberá ocasións nas que teñas problemas
 	route ADD 172.16.2.0 MASK 255.255.255.0 192.168.0.202
 	route ADD 172.16.3.0 MASK 255.255.255.0 192.168.0.203
 	route print
-
+```
 
 - macOS:
 	sudo route -n add -net 10.0.0.0/16 192.168.0.201
