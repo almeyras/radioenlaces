@@ -1,4 +1,4 @@
-### 1 - Rede debuxada sen configurar
+## 1 - Rede debuxada sen configurar
 Este primeiro ficheiro presenta a rede completamente debuxada, pero só ten configurados os seguintes equipos:
 - Routers CPE de cada cliente (NAT, AP Wi-Fi, IP WAN con ruta predeterminada ó nodo máis próximo: `172.16.X.1`). 
 - Redes locais de cada cliente `192.168.0.0/24`
@@ -38,7 +38,7 @@ copy running-config startup-config
 
 > Repara en que a rede `192.168.0.0/24` é idéntica no circuito de tránsito en as tres subredes NAT dos clientes. Calquera equipo vai poder alcanzar `8.8.8.8` gracias á maxia da NAT.
 
-### 2 - Interfaces
+## 2 - Interfaces
 
 
 **N1**:
@@ -120,7 +120,7 @@ copy running-config startup-config
 
 ```
 
-### 3 - STP
+## 3 - STP
 
 Este apartado evita a xeracion de tormentas broadcast por bucles na rede clase A, que é mallada. **N1bridgeA, N2bridgeA, N3bridgeA** (switches que simulan os bridges clase S que deberían ir nos propios routers N1, N2, N3):
 
@@ -142,7 +142,7 @@ copy running-config startup-config
 ```
 
 
-### 4 - Rutas OSPF
+## 4 - Rutas OSPF
 Este apartado garantiza a conectividade lóxica entre as redes clase A y B. É unha opción moito máis recomendable que as rutas estáticas xa que permite escalar a rede con maior facilidade.
 
 **Proba a facer `ping 172.16.x.x` desde un equipo que non linde con dita rede antes e despois de converxer o enrutamento OSPF**
@@ -205,7 +205,7 @@ copy running-config startup-config
 ```
 
 
-### 5 - Rutas de último recurso
+## 5 - Rutas de último recurso
 Este apartado serve para que os equipos podan acceder a Internet.
 
 N1 e N2 (acceden a Internet a través do punto neutro ou do nodo adxacente se o tránsito falla). Empezamos por **N1**:
@@ -242,7 +242,7 @@ Os routers CPE xa veñen configurados con porta de enlace a IP clase B do seu pr
 
 
 
-### 6 - NAT
+## 6 - NAT
 Después de este paso, el tráfico de N1 y N2 podrá llegar a Internet.
 
 **N1** e **N2**:
@@ -269,7 +269,7 @@ end
 copy running-config startup-config
 ```
 
-### Cómo borrar configuración de routers/switches
+## Cómo borrar configuración de routers/switches
 Para restaurar la configuración predeterminada de los equipos:
 
 ```
