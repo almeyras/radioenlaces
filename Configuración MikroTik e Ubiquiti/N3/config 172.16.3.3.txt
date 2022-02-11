@@ -1,0 +1,32 @@
+# jan/19/2022 18:47:44 by RouterOS 6.44
+# software id = 51T5-L0AA
+#
+# model = RouterBOARD SXTsq 5nD
+# serial number = B7E50D182A35
+/interface bridge
+add name=bridgeClaseB
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=\
+    "profile 1" supplicant-identity="" wpa2-pre-shared-key=Adminadmin1
+/interface wireless
+set [ find default-name=wlan1 ] antenna-gain=26 band=5ghz-onlyn channel-width=\
+    20/40mhz-XX country=spain disabled=no frequency=auto frequency-mode=\
+    regulatory-domain installation=outdoor mode=station-bridge \
+    security-profile="profile 1" ssid=accesoN3 wireless-protocol=802.11 \
+    wmm-support=enabled
+/ip hotspot profile
+set [ find default=yes ] html-directory=flash/hotspot
+/interface bridge port
+add bridge=bridgeClaseB interface=ether1
+add bridge=bridgeClaseB interface=wlan1
+/ip address
+add address=172.16.3.3/24 interface=bridgeClaseB network=172.16.3.0
+/ip dns
+set servers=8.8.8.8
+/ip route
+add distance=1 gateway=172.16.3.1
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=clenteN3

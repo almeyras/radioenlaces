@@ -1,0 +1,53 @@
+/interface bridge
+add name=bridgeWAN
+add name=bridgeclaseAbackhaul
+add name=bridgeclaseBlastmile
+/interface ethernet
+set [ find default-name=ether2 ] poe-out=forced-on
+set [ find default-name=ether3 ] poe-out=forced-on
+/interface lte apn
+set [ find default=yes ] ip-type=ipv4
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing ospf instance
+add name=default router-id=10.0.3.1
+/routing ospf area
+add instance=default name=ospf-area-1
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,passw\
+    ord,web,sniff,sensitive,api,romon,dude,tikapp,rest-api"
+/interface bridge port
+add bridge=bridgeWAN ingress-filtering=no interface=sfp1
+add bridge=bridgeWAN ingress-filtering=no interface=ether1
+add bridge=bridgeclaseAbackhaul ingress-filtering=no interface=ether2
+add bridge=bridgeclaseAbackhaul ingress-filtering=no interface=ether3
+add bridge=bridgeclaseBlastmile ingress-filtering=no interface=ether4
+add bridge=bridgeclaseBlastmile ingress-filtering=no interface=ether5
+/ip neighbor discovery-settings
+set discover-interface-list=!dynamic
+/ip settings
+set max-neighbor-entries=8192
+/ipv6 settings
+set max-neighbor-entries=8192
+/ip address
+add address=10.0.3.1/16 interface=bridgeclaseAbackhaul network=10.0.0.0
+add address=172.16.3.1/24 interface=bridgeclaseBlastmile network=172.16.3.0
+add address=192.168.2.203/24 interface=bridgeWAN network=192.168.2.0
+/ip dhcp-client
+add interface=bridgeWAN
+/ip firewall nat
+add action=masquerade chain=srcnat disabled=yes out-interface=bridgeWAN
+/ip route
+add disabled=no distance=5 dst-address=0.0.0.0/0 gateway=10.0.1.1 pref-src=\
+    0.0.0.0 routing-table=main scope=30 suppress-hw-offload=no target-scope=10
+add disabled=no dst-address=0.0.0.0/0 gateway=10.0.2.1 routing-table=main \
+    suppress-hw-offload=no
+/routing ospf interface-template
+add area=ospf-area-1 networks=172.16.3.0/24
+add area=ospf-area-1 networks=10.0.0.0/16
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=N3
+/system package update
+set channel=development

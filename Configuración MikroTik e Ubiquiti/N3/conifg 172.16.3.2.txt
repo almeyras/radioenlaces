@@ -1,0 +1,31 @@
+# jan/19/2022 18:46:46 by RouterOS 6.44
+# software id = EDVW-ZDAJ
+#
+# model = RouterBOARD SXTsq 5nD
+# serial number = B7E50DBDC03F
+/interface bridge
+add name=bridgeClaseB
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+add authentication-types=wpa2-psk eap-methods="" mode=dynamic-keys name=\
+    profile1 supplicant-identity="" wpa2-pre-shared-key=Adminadmin1
+/interface wireless
+set [ find default-name=wlan1 ] antenna-gain=26 band=5ghz-onlyn channel-width=\
+    20/40mhz-XX country=spain disabled=no frequency=auto frequency-mode=\
+    regulatory-domain installation=outdoor mode=bridge security-profile=\
+    profile1 ssid=accesoN3 wmm-support=enabled wps-mode=disabled
+/ip hotspot profile
+set [ find default=yes ] html-directory=flash/hotspot
+/interface bridge port
+add bridge=bridgeClaseB interface=ether1
+add bridge=bridgeClaseB interface=wlan1
+/ip address
+add address=172.16.3.2/24 interface=bridgeClaseB network=172.16.3.0
+/ip dns
+set allow-remote-requests=yes servers=8.8.8.8
+/ip route
+add distance=1 gateway=172.16.3.1
+/system clock
+set time-zone-name=Europe/Madrid
+/system identity
+set name=accesoN3
